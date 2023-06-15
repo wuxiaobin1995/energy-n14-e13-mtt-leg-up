@@ -1,7 +1,7 @@
 /*
  * @Author      : Mr.bin
  * @Date        : 2023-06-10 11:19:30
- * @LastEditTime: 2023-06-12 23:00:23
+ * @LastEditTime: 2023-06-15 22:27:13
  * @Description : Vuex
  */
 import Vue from 'vue'
@@ -32,6 +32,19 @@ export default new Vuex.Store({
       stage: '' // MTT分期类型
     },
 
+    /* 蹬伸的范围位移量mm，用于训练模式的参考曲线 */
+    relativeDistance: null,
+
+    /* 下肢测试专用 */
+    /* 测试项目数组 */
+    testSelection: ['优势', '劣势', '双'],
+    /* 测试最终结果，kg */
+    resultValue: {
+      goodLegResult: null, // 优势腿
+      badLegResult: null, // 劣势腿
+      bothLegResult: null // 双腿
+    },
+
     /* 参数配置数组 */
     settings: [],
 
@@ -56,6 +69,20 @@ export default new Vuex.Store({
     /* 当前登录的用户及其信息 */
     CHANGE_CURRENTUSERINFO(state, currentUserInfo) {
       state.currentUserInfo = currentUserInfo
+    },
+
+    /* 蹬伸的范围位移量mm，用于训练模式的参考曲线 */
+    SET_RELATIVEDISTANCE(state, relativeDistance) {
+      state.relativeDistance = relativeDistance
+    },
+
+    /* 测试项目数组 */
+    CHANGE_TESTSELECTION(state, testSelection) {
+      state.testSelection = testSelection
+    },
+    /* 测试最终结果，kg */
+    CHANGE_RESULTVALUE(state, resultValue) {
+      state.resultValue = resultValue
     },
 
     /* 参数配置数组 */
@@ -95,6 +122,29 @@ export default new Vuex.Store({
     changeCurrentUserInfo({ commit }, currentUserInfo) {
       return new Promise((resolve, reject) => {
         commit('CHANGE_CURRENTUSERINFO', currentUserInfo)
+        resolve()
+      })
+    },
+
+    /* 蹬伸的范围位移量mm，用于训练模式的参考曲线 */
+    setRelativeDistance({ commit }, relativeDistance) {
+      return new Promise((resolve, reject) => {
+        commit('SET_RELATIVEDISTANCE', relativeDistance)
+        resolve()
+      })
+    },
+
+    /* 测试项目数组 */
+    changeTestSelection({ commit }, testSelection) {
+      return new Promise((resolve, reject) => {
+        commit('CHANGE_TESTSELECTION', testSelection)
+        resolve()
+      })
+    },
+    /* 测试最终结果，kg */
+    changeResultValue({ commit }, resultValue) {
+      return new Promise((resolve, reject) => {
+        commit('CHANGE_RESULTVALUE', resultValue)
         resolve()
       })
     },

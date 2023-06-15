@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2023-06-12 22:55:19
- * @LastEditTime: 2023-06-12 23:02:11
+ * @LastEditTime: 2023-06-15 22:28:44
  * @Description : home
 -->
 <template>
@@ -87,6 +87,12 @@ export default {
         admission: '',
         stage: ''
       })
+      this.$store.dispatch('changeTestSelection', ['优势', '劣势', '双']) // 测试项目数组
+      this.$store.dispatch('changeResultValue', {
+        goodLegResult: null, // 优势腿
+        badLegResult: null, // 劣势腿
+        bothLegResult: null // 双腿
+      }) // 测试最终结果，kg
       this.$store.dispatch('setSettings', []) // 参数配置数组
       this.$store.dispatch('setNextDevice', '') // 下一个设备的名称
     },
@@ -156,95 +162,117 @@ export default {
             const userData = data.result.user_data // 用户信息
             const orderIdType = data.result.order_id_type // 订单类型
 
-            // 设置订单号到 Vuex
-            this.$store.dispatch('setOrderId', orderIdReturn).then(() => {
-              this.$message({
-                message: `订单号获取成功，并设置Vuex。`,
-                type: 'success',
-                duration: 2000
-              })
-            })
-
-            // 设置用户信息到 Vuex
-            this.$store
-              .dispatch('changeCurrentUserInfo', {
-                userId: userData.user_id,
-                userName: userData.name,
-                sex: userData.gentle,
-                height: userData.height,
-                weight: userData.weight,
-                birthday: userData.birth,
-                admission: userData.admission,
-                stage: userData.stage
-              })
-              .then(() => {
+            // 判断一下，如果是训练订单，要先完成蹬伸范围测量
+            if (
+              orderIdType === '训练' &&
+              this.$store.state.relativeDistance === null
+            ) {
+              this.$alert(
+                '检测到您未进行蹬伸范围测量，请点击“确 定”按钮，前往测量！',
+                `提示`,
+                {
+                  type: 'warning',
+                  showClose: false,
+                  center: true,
+                  confirmButtonText: '确 定',
+                  callback: () => {
+                    this.$router.push({
+                      path: '/set-relativeDistance'
+                    })
+                  }
+                }
+              )
+            } else {
+              // 设置订单号到 Vuex
+              this.$store.dispatch('setOrderId', orderIdReturn).then(() => {
                 this.$message({
-                  message: `用户信息获取成功，并设置Vuex。`,
+                  message: `订单号获取成功，并设置Vuex。`,
                   type: 'success',
-                  duration: 2000,
-                  offset: 60
+                  duration: 2000
                 })
               })
 
-            // 获取对应的参数配置数组
-            let setDatas = []
-            if (orderIdType === '评估') {
-              setDatas = JSON.parse(data.result.test_set_data)
-            } else if (orderIdType === '训练') {
-              setDatas = JSON.parse(data.result.train_set_data)
-            }
-            console.log('该订单包含的所有设备的配置项：\n', setDatas)
-            let nextDevice = ''
-            let setArray = []
-            for (let i = 0; i < setDatas.length; i++) {
-              const item = setDatas[i]
-              if (item.name === 'LowerLimbExtension') {
-                setArray = item.settings
-                console.log(`对应设备【${item.name}】的配置项：\n`, setArray)
-                // 订单的下一个设备（用于结束后提示下一个设备，增加用户体验）
-                if (setDatas[i + 1]) {
-                  nextDevice = setDatas[i + 1].name
-                  console.log('订单的下一个设备名称：', nextDevice)
+              // 设置用户信息到 Vuex
+              this.$store
+                .dispatch('changeCurrentUserInfo', {
+                  userId: userData.user_id,
+                  userName: userData.name,
+                  sex: userData.gentle,
+                  height: userData.height,
+                  weight: userData.weight,
+                  birthday: userData.birth,
+                  admission: userData.admission,
+                  stage: userData.stage
+                })
+                .then(() => {
+                  this.$message({
+                    message: `用户信息获取成功，并设置Vuex。`,
+                    type: 'success',
+                    duration: 2000,
+                    offset: 60
+                  })
+                })
+
+              // 获取对应的参数配置数组
+              let setDatas = []
+              if (orderIdType === '评估') {
+                setDatas = JSON.parse(data.result.test_set_data)
+              } else if (orderIdType === '训练') {
+                setDatas = JSON.parse(data.result.train_set_data)
+              }
+              console.log('该订单包含的所有设备的配置项：\n', setDatas)
+              let nextDevice = ''
+              let setArray = []
+              for (let i = 0; i < setDatas.length; i++) {
+                const item = setDatas[i]
+                if (item.name === 'LowerLimbExtension') {
+                  setArray = item.settings
+                  console.log(`对应设备【${item.name}】的配置项：\n`, setArray)
+                  // 订单的下一个设备（用于结束后提示下一个设备，增加用户体验）
+                  if (setDatas[i + 1]) {
+                    nextDevice = setDatas[i + 1].name
+                    console.log('订单的下一个设备名称：', nextDevice)
+                  }
                 }
               }
-            }
 
-            // 设置参数配置数组到 Vuex
-            this.$store.dispatch('setSettings', setArray).then(() => {
-              this.$message({
-                message: `参数配置数组获取成功，并设置Vuex。`,
-                type: 'success',
-                duration: 2000,
-                offset: 100
+              // 设置参数配置数组到 Vuex
+              this.$store.dispatch('setSettings', setArray).then(() => {
+                this.$message({
+                  message: `参数配置数组获取成功，并设置Vuex。`,
+                  type: 'success',
+                  duration: 2000,
+                  offset: 100
+                })
               })
-            })
 
-            // 设置订单的下一个设备名称到 Vuex
-            this.$store.dispatch('setNextDevice', nextDevice).then(() => {
-              if (nextDevice === '') {
-                this.$message({
-                  message: `本设备为最后一项，并设置Vuex。`,
-                  type: 'success',
-                  duration: 2000,
-                  offset: 140
-                })
-              } else {
-                this.$message({
-                  message: `订单的下一个设备名称【${nextDevice}】，并设置Vuex。`,
-                  type: 'success',
-                  duration: 2000,
-                  offset: 140
-                })
-              }
-            })
+              // 设置订单的下一个设备名称到 Vuex
+              this.$store.dispatch('setNextDevice', nextDevice).then(() => {
+                if (nextDevice === '') {
+                  this.$message({
+                    message: `本设备为最后一项，并设置Vuex。`,
+                    type: 'success',
+                    duration: 2000,
+                    offset: 140
+                  })
+                } else {
+                  this.$message({
+                    message: `订单的下一个设备名称【${nextDevice}】，并设置Vuex。`,
+                    type: 'success',
+                    duration: 2000,
+                    offset: 140
+                  })
+                }
+              })
 
-            // 跳转至任务详情页
-            this.$router.push({
-              path: '/task',
-              query: {
-                orderIdType: JSON.stringify(orderIdType)
-              }
-            })
+              // 跳转至任务详情页
+              this.$router.push({
+                path: '/task',
+                query: {
+                  orderIdType: JSON.stringify(orderIdType)
+                }
+              })
+            }
           } else if (data.status === -9) {
             this.$alert(
               '订单号有误，请重新输入订单号！',

@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-07-28 10:25:39
- * @LastEditTime: 2023-06-10 11:50:03
+ * @LastEditTime: 2023-06-15 14:34:52
  * @Description : 顶部栏
 -->
 <template>
@@ -23,6 +23,13 @@
             >
             <el-dropdown-item icon="el-icon-thumb" command="设置K"
               >设置K</el-dropdown-item
+            >
+            <el-dropdown-item icon="el-icon-set-up" command="测量蹬伸范围"
+              >测量蹬伸范围（{{
+                this.$store.state.relativeDistance === null
+                  ? '待测'
+                  : this.$store.state.relativeDistance
+              }}）</el-dropdown-item
             >
             <el-dropdown-item
               icon="el-icon-s-promotion"
@@ -215,6 +222,34 @@ export default {
                     })
                   })
                   .catch(() => {})
+              })
+              .catch(() => {})
+          }
+
+          break
+        case '测量蹬伸范围':
+          if (this.activeOrderId === '无') {
+            this.$router.push({
+              path: '/set-relativeDistance'
+            })
+          } else {
+            this.$confirm(
+              '订单进行中，此操作会退出该订单，先前所测数据将丢失，是否退出？',
+              '警告',
+              {
+                type: 'warning',
+                showClose: true,
+                closeOnClickModal: true,
+                closeOnPressEscape: true,
+                center: true,
+                confirmButtonText: '退 出',
+                cancelButtonText: '否'
+              }
+            )
+              .then(() => {
+                this.$router.push({
+                  path: '/set-relativeDistance'
+                })
               })
               .catch(() => {})
           }

@@ -1,7 +1,7 @@
 /*
  * @Author      : Mr.bin
  * @Date        : 2023-06-10 11:19:30
- * @LastEditTime: 2023-06-12 22:58:03
+ * @LastEditTime: 2023-06-15 22:31:10
  * @Description : 路由
  */
 import Vue from 'vue'
@@ -34,8 +34,71 @@ const routes = [
         name: 'home',
         component: () => import('@/views/home'),
         meta: ['首页']
+      },
+      // 调零
+      {
+        path: 'set-zero',
+        name: 'set-zero',
+        component: () => import('@/views/set/set-zero'),
+        meta: ['调零']
+      },
+      // 设置K
+      {
+        path: 'set-k',
+        name: 'set-k',
+        component: () => import('@/views/set/set-k'),
+        meta: ['设置K']
+      },
+      // 设置蹬伸动作范围
+      {
+        path: 'set-relativeDistance',
+        name: 'set-relativeDistance',
+        component: () => import('@/views/set/set-relativeDistance'),
+        meta: ['设置蹬伸动作范围']
+      },
+      // 开发者
+      {
+        path: 'set-developer',
+        name: 'set-developer',
+        component: () => import('@/views/set/set-developer'),
+        meta: ['开发者']
+      },
+
+      // 任务详情页
+      {
+        path: 'task',
+        name: 'task',
+        component: () => import('@/views/task'),
+        meta: ['任务详情页']
+      },
+
+      /* 评估 */
+      // 下肢测试-具体测量
+      {
+        path: 'lower-limb-measure',
+        name: 'lower-limb-measure',
+        component: () => import('@/views/test-mode/lower-limb/measure'),
+        meta: ['下肢测试-具体测量']
       }
+
+      /* 训练 */
     ]
+  },
+
+  /* 评估数据统一发送页面 */
+  {
+    path: '/test-send',
+    name: 'test-send',
+    component: () => import('@/views/test-mode/test-send'),
+    meta: ['评估数据统一发送页面']
+  },
+
+  /* 训练数据统一发送页面 */
+  {
+    path: '/train-send',
+    name: 'train-send',
+    component: () => import('@/views/train-mode/train-send'),
+    meta: ['训练数据统一发送页面']
   },
 
   {
