@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2023-06-15 22:01:25
- * @LastEditTime: 2023-06-15 22:02:46
+ * @LastEditTime: 2023-06-16 16:34:34
  * @Description : 评估数据统一发送页面
 -->
 <template>
@@ -64,7 +64,7 @@ export default {
      */
     sendData() {
       const mttIP = window.localStorage.getItem('mttIP')
-      // const api = `http://${mttIP}/energy_t6_m5_mtt/public/index.php/squatControl/sendSquatControlAssessData`
+      const api = `http://${mttIP}/energy_t6_m5_mtt/public/index.php/lowerLimbExtension/sendLowerLimbExtensionAssessData`
       console.log(api)
 
       this.fullscreenLoading = true

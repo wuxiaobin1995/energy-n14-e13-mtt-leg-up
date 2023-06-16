@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2023-06-15 16:56:39
- * @LastEditTime: 2023-06-15 22:35:05
+ * @LastEditTime: 2023-06-16 09:13:23
  * @Description : 下肢测试-具体测量
 -->
 <template>
@@ -663,7 +663,7 @@ export default {
                     pattern: '下肢测试',
                     side: this.affectedSide, // 患侧（左腿、右腿）
                     currentAge: currentAge, // 完成该次测试时的岁数
-                    data: this.$store.state.resultValue
+                    result: this.$store.state.resultValue // 测试结果
                   }
 
                   /* 暂存至 sessionStorage */
@@ -676,24 +676,47 @@ export default {
                     JSON.stringify(resultArray)
                   )
 
-                  /* 跳转至统一测试数据上传页面 */
-                  this.$alert(`请点击“完成”按钮，实现数据上传`, '完成', {
-                    type: 'success',
-                    showClose: false,
-                    center: true,
-                    confirmButtonText: '完 成',
-                    callback: () => {
-                      this.$router.push({
-                        path: '/test-send'
-                      })
-                    }
-                  })
+                  if (this.$store.state.settings.length) {
+                    this.$alert(`请点击“下一项”按钮`, '完成', {
+                      type: 'success',
+                      showClose: false,
+                      center: true,
+                      confirmButtonText: '下一项',
+                      callback: () => {
+                        this.handleFinish()
+                      }
+                    })
+                  } else {
+                    this.$alert(`请点击“完成订单”按钮`, '完成', {
+                      type: 'success',
+                      showClose: false,
+                      center: true,
+                      confirmButtonText: '完成订单',
+                      callback: () => {
+                        this.handleFinish()
+                      }
+                    })
+                  }
                 })
               } else {
                 /* 通过刷新来进行下一个子项目的测量（即优势腿、劣势腿、双腿） */
                 this.handleRefresh()
               }
             })
+        })
+      }
+    },
+
+    /**
+     * @description: 完成订单或者下一项
+     */
+    handleFinish() {
+      if (this.$store.state.settings.length) {
+        // 因为这个只有一个测试，所以没有下一项
+      } else {
+        // 完成订单
+        this.$router.push({
+          path: '/test-send'
         })
       }
     },

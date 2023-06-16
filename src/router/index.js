@@ -1,7 +1,7 @@
 /*
  * @Author      : Mr.bin
  * @Date        : 2023-06-10 11:19:30
- * @LastEditTime: 2023-06-15 22:31:10
+ * @LastEditTime: 2023-06-16 15:49:49
  * @Description : 路由
  */
 import Vue from 'vue'
@@ -79,9 +79,44 @@ const routes = [
         name: 'lower-limb-measure',
         component: () => import('@/views/test-mode/lower-limb/measure'),
         meta: ['下肢测试-具体测量']
-      }
+      },
 
       /* 训练 */
+      // 基础训练-具体测量
+      {
+        path: 'basics-measure',
+        name: 'basics-measure',
+        component: () => import('@/views/train-mode/basics/measure'),
+        meta: ['基础训练-具体测量']
+      },
+      // 进阶训练-具体测量
+      {
+        path: 'advance-measure',
+        name: 'advance-measure',
+        component: () => import('@/views/train-mode/advance/measure'),
+        meta: ['进阶训练-具体测量']
+      },
+      // 离心训练-具体测量
+      {
+        path: 'offcenter-measure',
+        name: 'offcenter-measure',
+        component: () => import('@/views/train-mode/offcenter/measure'),
+        meta: ['离心训练-具体测量']
+      },
+      // 等长训练-具体测量
+      {
+        path: 'equal-measure',
+        name: 'equal-measure',
+        component: () => import('@/views/train-mode/equal/measure'),
+        meta: ['等长训练-具体测量']
+      },
+      // 自定义训练-具体测量
+      {
+        path: 'custom-measure',
+        name: 'custom-measure',
+        component: () => import('@/views/train-mode/custom/measure'),
+        meta: ['自定义训练-具体测量']
+      }
     ]
   },
 
