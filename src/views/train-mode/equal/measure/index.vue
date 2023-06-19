@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2023-06-16 15:49:43
- * @LastEditTime: 2023-06-16 16:31:26
+ * @LastEditTime: 2023-06-19 22:34:13
  * @Description : 等长训练-具体测量
 -->
 <template>
@@ -484,9 +484,9 @@ export default {
           num: this.num, // 次数
           trainPart: this.trainPart, // 训练部位（左腿、右腿、双腿）
           bearWeightNum: this.bearWeightNum, // 负重块数量（2.5kg/块）
-          leftWeightArray: JSON.stringify(this.leftWeightArray), // 左侧负重数组
-          rightWeightArray: JSON.stringify(this.rightWeightArray), // 右侧负重数组
-          addWeightArray: JSON.stringify(this.addWeightArray), // 左右合计负重数组
+          leftWeightArray: this.leftWeightArray, // 左侧负重数组
+          rightWeightArray: this.rightWeightArray, // 右侧负重数组
+          addWeightArray: this.addWeightArray, // 左右合计负重数组
           leftWeightAverage: leftWeightAverage, // 左侧负重平均值
           rightWeightAverage: rightWeightAverage // 右侧负重平均值
         }

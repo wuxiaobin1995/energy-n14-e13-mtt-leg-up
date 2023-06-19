@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2023-06-16 15:50:31
- * @LastEditTime: 2023-06-16 16:26:00
+ * @LastEditTime: 2023-06-19 22:34:00
  * @Description : 自定义训练-具体测量
 -->
 <template>
@@ -558,8 +558,8 @@ export default {
           entadRate: this.entadRate, // 向心比
           keepdRate: this.keepdRate, // 保持比
           offcenterRate: this.offcenterRate, // 离心比
-          leftWeightArray: JSON.stringify(this.leftWeightArray), // 左侧负重数组
-          rightWeightArray: JSON.stringify(this.rightWeightArray), // 右侧负重数组
+          leftWeightArray: this.leftWeightArray, // 左侧负重数组
+          rightWeightArray: this.rightWeightArray, // 右侧负重数组
           leftWeightAverage: leftWeightAverage, // 左侧负重平均值
           rightWeightAverage: rightWeightAverage, // 右侧负重平均值
           completion: this.completion // 完成度%
