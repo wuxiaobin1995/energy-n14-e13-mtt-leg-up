@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2023-06-12 22:55:19
- * @LastEditTime: 2023-06-15 22:28:44
+ * @LastEditTime: 2023-06-19 15:28:25
  * @Description : home
 -->
 <template>
@@ -88,11 +88,12 @@ export default {
         stage: ''
       })
       this.$store.dispatch('changeTestSelection', ['优势', '劣势', '双']) // 测试项目数组
+      // 测试最终结果，kg
       this.$store.dispatch('changeResultValue', {
         goodLegResult: null, // 优势腿
         badLegResult: null, // 劣势腿
         bothLegResult: null // 双腿
-      }) // 测试最终结果，kg
+      })
       this.$store.dispatch('setSettings', []) // 参数配置数组
       this.$store.dispatch('setNextDevice', '') // 下一个设备的名称
     },

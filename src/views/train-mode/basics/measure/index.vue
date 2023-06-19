@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2023-06-16 09:17:00
- * @LastEditTime: 2023-06-16 16:25:50
+ * @LastEditTime: 2023-06-19 17:17:25
  * @Description : 基础训练-具体测量
 -->
 <template>
@@ -21,6 +21,7 @@
             >基础训练</el-button
           >
         </div>
+
         <!-- 按钮组 -->
         <div class="btn">
           <div>【部位：{{ trainPart }}】</div>
@@ -495,7 +496,7 @@ export default {
       /* 计算完成度 */
       const matchArray = [] // 参考曲线数组
       const yesArray = [] // 达标数据数组
-      for (let i = 0; i < this.nowNum; i++) {
+      for (let i = 0; i < this.num; i++) {
         matchArray.push(...this.standardGraph)
       }
       for (let i = 0; i < matchArray.length; i++) {

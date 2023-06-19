@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2023-06-15 16:56:39
- * @LastEditTime: 2023-06-16 09:13:23
+ * @LastEditTime: 2023-06-19 15:14:11
  * @Description : 下肢测试-具体测量
 -->
 <template>
@@ -366,7 +366,7 @@ export default {
 
               const dataArray = data.split(',') // 将原始数据以逗号作为分割符，组成一个数组
               const weightDigital = dataArray[0] // 负重数字量，比如00327640032720
-              // const distancePulse = dataArray[1] // 位移脉冲量，需要乘2才是mm值
+              // const distancePulse = dataArray[1] // 位移脉冲量
 
               /* 计算左负重、右负重、左右合计负重，精确到0.1kg */
               this.leftWeight = parseFloat(
