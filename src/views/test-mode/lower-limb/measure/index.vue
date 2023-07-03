@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2023-06-15 16:56:39
- * @LastEditTime: 2023-06-19 15:14:11
+ * @LastEditTime: 2023-07-03 09:52:05
  * @Description : 下肢测试-具体测量
 -->
 <template>
@@ -140,6 +140,8 @@ import path from 'path'
 /* 串口通信库 */
 import SerialPort from 'serialport'
 import Readline from '@serialport/parser-readline'
+
+import { calculate } from '../utils/index.js'
 
 export default {
   name: 'lower-limb-measure',
@@ -659,11 +661,42 @@ export default {
                     this.$store.state.currentUserInfo.birthday,
                     'years'
                   )
+
+                  const calculateResult = calculate({
+                    sex: this.$store.state.currentUserInfo.sex,
+                    height: this.$store.state.currentUserInfo.height,
+                    weight: this.$store.state.currentUserInfo.weight,
+                    currentAge: currentAge,
+                    affectedSide: this.affectedSide,
+                    resultValue: this.$store.state.resultValue
+                  })
                   const obj = {
                     pattern: '下肢测试',
                     side: this.affectedSide, // 患侧（左腿、右腿）
                     currentAge: currentAge, // 完成该次测试时的岁数
-                    result: this.$store.state.resultValue // 测试结果
+                    result: this.$store.state.resultValue, // 测试结果
+
+                    singleRecommendedValue:
+                      calculateResult.singleRecommendedValue, // 单腿推荐值kg
+                    bothRecommendedValue: calculateResult.bothRecommendedValue, // 双腿推荐值kg
+
+                    leftValue: calculateResult.leftValue, // 左腿测量值kg
+                    rightValue: calculateResult.rightValue, // 右腿测量值kg
+                    bothValue: calculateResult.bothValue, // 双腿测量值kg
+
+                    leftScore: calculateResult.leftScore, // 左腿得分【0~10】
+                    rightScore: calculateResult.rightScore, // 右腿得分【0~10】
+                    bothScore: calculateResult.bothScore, // 双腿得分【0~10】
+                    muscleRatioScore: calculateResult.muscleRatioScore, // 肌力比得分【0~10】
+
+                    leftEvaluateText: calculateResult.leftEvaluateText, // 左腿评价【优、良、中、较差、差】
+                    rightEvaluateText: calculateResult.rightEvaluateText, // 右腿评价【优、良、中、较差、差】
+                    bothEvaluateText: calculateResult.bothEvaluateText, // 双腿评价【优、良、中、较差、差】
+                    muscleRatioEvaluateText:
+                      calculateResult.muscleRatioEvaluateText, // 肌力比评价【优、良、中、较差、差】
+
+                    leftTrainRecommend: calculateResult.leftTrainRecommend, // 左腿的肌力亏欠值
+                    rightTrainRecommend: calculateResult.rightTrainRecommend // 右腿的肌力亏欠值
                   }
 
                   /* 暂存至 sessionStorage */
